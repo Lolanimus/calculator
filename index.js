@@ -4,21 +4,27 @@ let firstNumber;
 let operator;
 let secondNumber;
 let result;
+let counter1 = 0;
+let counter2 = 0;
 
 function add(a, b) {
     resultScreen.textContent = a + b; 
+    disableButtonsAfterEqual(true);
 }
 
 function subtract(a, b) {
     resultScreen.textContent = a - b; 
+    disableButtonsAfterEqual(true);
 }
 
 function multiply(a, b) {
     resultScreen.textContent = a * b; 
+    disableButtonsAfterEqual(true);
 }
 
 function divide(a, b) {
     resultScreen.textContent = a / b; 
+    disableButtonsAfterEqual(true);
 }
 
 function fromStringtoNumA(a) {
@@ -50,30 +56,36 @@ function doTheEquation(a, oper, b) {
     operatorDeterminizer(a, oper, b);
 }
 
+function disableOper(boolean) {
+    buttons.forEach(item => {
+        if(item.classList.contains("oper")) {
+            item.disabled = boolean;
+        };
+    })
+}
+
+function disableButtonsAfterEqual(boolean) {
+    buttons.forEach(item => {
+        if(!item.classList.contains("clear")) {
+            item.disabled = boolean;
+        };
+    })
+}
+
 function pushNumber(element) {
     resultScreen.textContent += element.id;
 }
 
 function pushOperator(element) {
     resultScreen.textContent += element.textContent;
-    buttons.forEach(item => {
-        if(item.classList.contains("oper")) {
-            item.disabled = true;
-        };
-    })
+    disableOper(true);
 }
 
 function pushClear() {
     resultScreen.textContent = "";
-    buttons.forEach(item => {
-        if(item.classList.contains("oper")) {
-            item.disabled = false;
-        };
-    })
+    disableOper(false);
+    disableButtonsAfterEqual(false);
 }
-
-let counter1 = 0;
-let counter2 = 0;
 
 function pushEqual() {
     let resultArr = resultScreen.textContent.split('');
