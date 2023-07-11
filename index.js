@@ -1,30 +1,28 @@
 let buttons = document.querySelectorAll('button');
-let resultScreen = document.querySelector('.result');
+let display = document.querySelector('.display');
 let firstNumber;
 let operator;
 let secondNumber;
-let result;
-let counter1 = 0;
-let counter2 = 0;
+let operClicked = false;
+let numClicked = false;
+let equalsClicked = false;
+let operAndNumClicked = false;
+let tempNum = '';
 
 function add(a, b) {
-    resultScreen.textContent = a + b; 
-    disableButtonsAfterEqual(true);
+    return a + b; 
 }
 
 function subtract(a, b) {
-    resultScreen.textContent = a - b; 
-    disableButtonsAfterEqual(true);
+    return a - b; 
 }
 
 function multiply(a, b) {
-    resultScreen.textContent = a * b; 
-    disableButtonsAfterEqual(true);
+    return a * b; 
 }
 
 function divide(a, b) {
-    resultScreen.textContent = a / b; 
-    disableButtonsAfterEqual(true);
+    return a / b; 
 }
 
 function fromStringtoNumA(a) {
@@ -44,64 +42,94 @@ function fromStringtoNumB(b) {
 }
 
 function operatorDeterminizer(a, oper, b) {
-    if(oper == '+') add(a, b);
-    if(oper == '-') subtract(a, b);
-    if(oper == '*') multiply(a, b);
-    if(oper == '/') divide(a, b);
+    if(oper.textContent == '+') return add(a, b);
+    if(oper.textContent == '-') return subtract(a, b);
+    if(oper.textContent == '*') return multiply(a, b);
+    if(oper.textContent == '/') return divide(a, b);
 }
 
 function doTheEquation(a, oper, b) {
     a = fromStringtoNumA(a);
     b = fromStringtoNumB(b);
-    operatorDeterminizer(a, oper, b);
+    return operatorDeterminizer(a, oper, b);
 }
 
-function disableOper(boolean) {
-    buttons.forEach(item => {
-        if(item.classList.contains("oper")) {
-            item.disabled = boolean;
-        };
-    })
+function pushNumber(number) {
+    if(operClicked) {
+        tempNum += number.id;
+    } else {
+        display.textContent += number.id;
+    }
+    numClicked = true;
+    doTheLogic();
 }
 
-function disableButtonsAfterEqual(boolean) {
-    buttons.forEach(item => {
-        if(!item.classList.contains("clear")) {
-            item.disabled = boolean;
-        };
-    })
+function pushOperator(oper) {
+    operator = oper;
+    operClicked = true;
+    doTheLogic();
 }
 
-function pushNumber(element) {
-    resultScreen.textContent += element.id;
-}
-
-function pushOperator(element) {
-    resultScreen.textContent += element.textContent;
-    disableOper(true);
+function pushEquals() {
+    equalsClicked = true;
+    doTheLogic();
 }
 
 function pushClear() {
-    resultScreen.textContent = "";
-    disableOper(false);
-    disableButtonsAfterEqual(false);
+    display.textContent = '';
+    tempNum = '';
+    firstNumber = '';
+    secondNumber = '';
 }
 
-function pushEqual() {
-    let resultArr = resultScreen.textContent.split('');
-    resultArr.forEach(item => {
-        if(isNaN(item)) {
-            counter1++;
-            return item;
-        }
-
-        if(counter1 === 0) {
-            counter2++;
-            return item;
+function operIsClickedFalse() {
+    buttons.forEach(item => {
+        if (item.classList.contains('oper')) {
+            operClicked = false;
         }
     })
-    firstNumber = resultArr.splice(0, counter2).join('');
-    operator = resultArr.shift();
-    secondNumber = resultArr.join('');
-    doTheEquation(firstNumber, operator, secondNumber);
+}
+
+function numIsClickedFalse() {
+    buttons.forEach(item => {
+        if (item.classList.contains('num')) {
+            numClicked = false;
+        }
+    })
+}
+
+function equalsIsClickedFalse() {
+    buttons.forEach(item => {
+        if (item.classList.contains('equals')) {
+            equalsClicked = false;
+        }
+    })
+}
+
+function operAndNumAreClicked() {
+    if(operClicked && numClicked) {
+        firstNumber = display.textContent;
+        display.textContent = tempNum;
+        operAndNumClicked = true;
+        operIsClickedFalse();
+    }
+    numIsClickedFalse();
+}
+
+function secondNumberDetermenizer() {
+    if(!equalsClicked) {
+        secondNumber = display.textContent;
+    } else {
+        firstNumber = doTheEquation(firstNumber, operator, secondNumber);
+        display.textContent = firstNumber;
+    }
+}
+
+function doTheLogic() {
+    operAndNumAreClicked();
+    if(operAndNumClicked) {
+        secondNumberDetermenizer();
+        tempNum = '';
+        equalsIsClickedFalse();
+    }
 }
