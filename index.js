@@ -1,13 +1,18 @@
-let buttons = document.querySelectorAll('button');
 let display = document.querySelector('.display');
-let firstNumber;
 let operator;
-let secondNumber;
+let tempOper;
+let result;
+let secondNumber = '';
+let firstNumber = '';
+let tempNum = '';
 let operClicked = false;
 let numClicked = false;
 let equalsClicked = false;
-let operAndNumClicked = false;
-let tempNum = '';
+let firstOperClick = true;
+let isTempOper = true;
+let operClickedAfterSecondNumber;
+let operClickedOnce = 0;
+
 
 function add(a, b) {
     return a + b; 
@@ -54,18 +59,45 @@ function doTheEquation(a, oper, b) {
     return operatorDeterminizer(a, oper, b);
 }
 
+function pushClear() {
+    display.textContent = '';
+    operator = undefined;
+    tempOper = undefined;
+    result = undefined;
+    secondNumber = '';
+    firstNumber = '';
+    tempNum = '';
+    operClicked = false;
+    numClicked = false;
+    equalsClicked = false;
+    firstOperClick = true;
+    isTempOper = true;
+    operClickedAfterSecondNumber = undefined;
+    operClickedOnce = 0;
+}
+
 function pushNumber(number) {
-    if(operClicked) {
-        tempNum += number.id;
+    if(operClickedOnce === 0) {
+        firstNumber += number.id;
+        display.textContent = firstNumber;
     } else {
-        display.textContent += number.id;
+        tempNum += number.id;
+        display.textContent = tempNum;
     }
+    
     numClicked = true;
     doTheLogic();
 }
 
 function pushOperator(oper) {
-    operator = oper;
+    if(firstOperClick || !isTempOper) {
+        operator = oper;
+        firstOperClick = false;
+    } else {
+        tempOper = oper;
+    }
+
+    operClickedOnce++;
     operClicked = true;
     doTheLogic();
 }
@@ -75,61 +107,42 @@ function pushEquals() {
     doTheLogic();
 }
 
-function pushClear() {
-    display.textContent = '';
+function defineOperatorAndEvaluate() {    
+    secondNumber = display.textContent;
+    if(isTempOper) {
+        if(result !== undefined) {
+            result = doTheEquation(result, operator, secondNumber);
+        } else {
+            result = doTheEquation(firstNumber, operator, secondNumber);
+        }
+        isTempOper = false;
+    } else if(!isTempOper) {
+        if(result !== undefined) {
+            result = doTheEquation(result, tempOper, secondNumber);
+        } else {
+            result = doTheEquation(firstNumber, tempOper, secondNumber);
+        }
+        isTempOper = true;
+    }
+    display.textContent = result;
+    operClickedOnce = 1;
+    equalsClicked = false;
+    numClicked = false;
+    operClickedAfterSecondNumber = false;
     tempNum = '';
     firstNumber = '';
     secondNumber = '';
 }
 
-function operIsClickedFalse() {
-    buttons.forEach(item => {
-        if (item.classList.contains('oper')) {
-            operClicked = false;
-        }
-    })
-}
-
-function numIsClickedFalse() {
-    buttons.forEach(item => {
-        if (item.classList.contains('num')) {
-            numClicked = false;
-        }
-    })
-}
-
-function equalsIsClickedFalse() {
-    buttons.forEach(item => {
-        if (item.classList.contains('equals')) {
-            equalsClicked = false;
-        }
-    })
-}
-
-function operAndNumAreClicked() {
-    if(operClicked && numClicked) {
-        firstNumber = display.textContent;
-        display.textContent = tempNum;
-        operAndNumClicked = true;
-        operIsClickedFalse();
-    }
-    numIsClickedFalse();
-}
-
-function secondNumberDetermenizer() {
-    if(!equalsClicked) {
-        secondNumber = display.textContent;
-    } else {
-        firstNumber = doTheEquation(firstNumber, operator, secondNumber);
-        display.textContent = firstNumber;
-    }
-}
-
 function doTheLogic() {
-    operAndNumAreClicked();
-    if(operAndNumClicked) {
-        secondNumberDetermenizer();
-        tempNum = '';
-        equalsIsClickedFalse();
+    if(operClicked && operClickedOnce === 1) {
+        secondNumber = tempNum;
+    } else if(operClicked && operClickedOnce === 2) {
+        secondNumber = tempNum;
+        operClickedAfterSecondNumber = true;
+    }
+
+    if(operClickedAfterSecondNumber && numClicked && secondNumber !== ''|| equalsClicked && numClicked && secondNumber !== '') {
+        defineOperatorAndEvaluate();
     }
 }
