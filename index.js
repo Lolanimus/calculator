@@ -13,6 +13,7 @@ let isTempOper = true;
 let operClickedAfterSecondNumber;
 let operClickedOnce = 0;
 let divideByZeroReactionBoolean = false;
+let pushDotBoolean = false;
 
 function add(a, b) {
     return a + b; 
@@ -31,19 +32,27 @@ function divide(a, b) {
 }
 
 function fromStringtoNumA(a) {
-    // if(a.includes('.')) {
-    //     return parseFloat(a);
-    // } else {
-        return parseInt(a);
-    // }
+    if(typeof a === 'string') {
+        if(a.includes('.')) {
+            return parseFloat(a);
+        } else {
+            return parseInt(a);
+        }
+    } else {
+        return a;
+    }
 }
 
 function fromStringtoNumB(b) {
-    // if(b.includes('.')) {
-    //     return parseFloat(b);
-    // } else {
-        return parseInt(b);
-    // }
+    if(typeof b === 'string') {
+        if(b.includes('.')) {
+            return parseFloat(b);
+        } else {
+            return parseInt(b);
+        }
+    } else {
+        return b;
+    }
 }
 
 function operatorDeterminizer(a, oper, b) {
@@ -116,6 +125,27 @@ function pushEquals() {
         equalsClicked = true;
     }
     doTheLogic();
+}
+
+function pushDot() {
+    pushDotBoolean = true;
+    if(operClickedOnce === 0) {
+        if(firstNumber === '') {
+            firstNumber = '0.'
+            display.textContent = firstNumber;
+        } else if(firstNumber.length > 0 && !firstNumber.includes('.')) {
+            firstNumber += '.'
+            display.textContent = firstNumber;
+        }
+    } else {
+        if(tempNum === '') {
+            tempNum = '0.'
+            display.textContent = tempNum;
+        } else if(tempNum.length > 0 && !tempNum.includes('.')) {
+            tempNum += '.'
+            display.textContent = tempNum;
+        }
+    }
 }
 
 function divideByZeroReaction(operat, secondNum) {
