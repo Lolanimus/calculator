@@ -8,24 +8,38 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 <body>
+
     <div class="main">
         <div class="display"></div>
-        <button class="num" id="1" onclick="pushNumber(this)">1</button>
-        <button class="num" id="2" onclick="pushNumber(this)">2</button>
-        <button class="num" id="3" onclick="pushNumber(this)">3</button>
-        <button class="add oper" onclick="pushOperator(this)">+</button>
-        <button class="num" id="4" onclick="pushNumber(this)">4</button>
-        <button class="num" id="5" onclick="pushNumber(this)">5</button>
-        <button class="num" id="6" onclick="pushNumber(this)">6</button>
-        <button class="subtract oper" onclick="pushOperator(this)">-</button>
-        <button class="num" id="7" onclick="pushNumber(this)">7</button>
-        <button class="num" id="8" onclick="pushNumber(this)">8</button>
-        <button class="num" id="9" onclick="pushNumber(this)">9</button>
-        <button class="multiply oper" onclick="pushOperator(this)">*</button>
-        <button class="num" id="0" onclick="pushNumber(this)">0</button>
-        <button class="clear" onclick="pushClear()">Clear</button>
-        <button class="equals" onclick="pushEquals()">=</button>
-        <button class="divide oper" onclick="pushOperator(this)">/</button>
+        <div class="clearEquals">
+            <button class="clear" onclick="pushClear()">CE</button>
+            <button class="equals" onclick="pushEquals()">=</button>
+        </div>
+        <div class="mainButtons">
+            <div class="numsAndDot">
+                <div class="numbers">
+                    <button class="num" id="7" onclick="pushNumber(this)">7</button>
+                    <button class="num" id="8" onclick="pushNumber(this)">8</button>
+                    <button class="num" id="9" onclick="pushNumber(this)">9</button>
+                    <button class="num" id="4" onclick="pushNumber(this)">4</button>
+                    <button class="num" id="5" onclick="pushNumber(this)">5</button>
+                    <button class="num" id="6" onclick="pushNumber(this)">6</button>
+                    <button class="num" id="1" onclick="pushNumber(this)">1</button>
+                    <button class="num" id="2" onclick="pushNumber(this)">2</button>
+                    <button class="num" id="3" onclick="pushNumber(this)">3</button>
+                </div>
+                <div class="zeroDot">
+                    <button class="num" id="0" onclick="pushNumber(this)">0</button>
+                    <button class="dot" id="dot" onclick="pushDot(this)">.</button>
+                </div>
+            </div>
+            <div class="operators">
+                <button class="add oper" onclick="pushOperator(this)">+</button>
+                <button class="subtract oper" onclick="pushOperator(this)">-</button>
+                <button class="multiply oper" onclick="pushOperator(this)">*</button>
+                <button class="divide oper" onclick="pushOperator(this)">/</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

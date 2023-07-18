@@ -1,5 +1,16 @@
 * {
     box-sizing: border-box;
+    margin: 0;
+}
+
+button {
+    margin: 12px;
+    padding: 0px;
+    font-size: 32px;
+    flex-grow: 1;
+    border-radius: 8px;
+    border-color: antiquewhite;
+    font-style: oblique;
 }
 
 body {
@@ -11,29 +22,96 @@ body {
 
 div {
     display: flex;
-    border: 1px solid black;
+    outline: 1px solid; /* use instead of border */
+    margin-top: 1px;
+    margin-left: 1px;
+    background-color: rgb(86, 86, 86);
 }
 
 .main {
-    height: 600px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 700px;
     width: 500px;
     flex-wrap: wrap;
-    padding: 5px;
+    border-radius: 3px;
 }
 
-.main div {
-    flex-basis: 94.7%;
+.display {
+    flex-basis: 15%;
     margin: 12px;
     padding: 0px;
     justify-content: start;
     align-items: center;
     font-size: 32px;
     padding-left: 20px;
+    background-color: aliceblue;
+    font-style: oblique;
 }
 
-button {
-    flex-basis: 20%;
-    margin: 12px;
-    padding: 0px;
-    font-size: 32px;
+.clearEquals {
+    flex-grow: 1;
+    flex-basis: 7%;
+    margin-left: 0px;
+    margin-bottom: 1px;
 }
+
+.clearEquals button {
+    margin: 12px;
+    flex-basis: 50%;
+    background-color: coral;
+}
+
+.mainButtons {
+    flex-grow: 3;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.numsAndDot {
+    flex-direction: column;
+    flex-basis: 80%;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+}
+
+.numbers {
+    flex-wrap: wrap;
+    flex-basis: 75%;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.numbers button {
+    flex-basis: 20%;
+    background-color: darkkhaki;
+}
+
+.zeroDot {
+    flex-basis: 25%;
+    margin-left: 0px;
+}
+
+.zeroDot .num {
+    flex-basis: 59.5%;
+    background-color: darkkhaki;
+}
+
+.dot {
+    flex-basis: 26%;
+    background-color: darkkhaki;
+}
+
+.operators {
+    flex-direction: column;
+    flex-basis: 26.5%;
+    margin-left: 1px;
+    margin-top: 0px;
+}
+
+.operators button {
+    flex-basis: 25%;
+    background-color: lightskyblue;
+}
+

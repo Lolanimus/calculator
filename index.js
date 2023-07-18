@@ -12,7 +12,7 @@ let firstOperClick = true;
 let isTempOper = true;
 let operClickedAfterSecondNumber;
 let operClickedOnce = 0;
-
+let divideByZeroReactionBoolean = false;
 
 function add(a, b) {
     return a + b; 
@@ -77,50 +77,74 @@ function pushClear() {
 }
 
 function pushNumber(number) {
-    if(operClickedOnce === 0) {
-        firstNumber += number.id;
-        display.textContent = firstNumber;
+    if(divideByZeroReactionBoolean) {
+        divideByZeroReactionBoolean = false;
+        pushClear();
     } else {
-        tempNum += number.id;
-        display.textContent = tempNum;
+        if(operClickedOnce === 0) {
+            firstNumber += number.id;
+            display.textContent = firstNumber;
+        } else {
+            tempNum += number.id;
+            display.textContent = tempNum;
+        }
+        numClicked = true;
+        doTheLogic();
     }
-    
-    numClicked = true;
-    doTheLogic();
 }
 
 function pushOperator(oper) {
-    if(firstOperClick || !isTempOper) {
+    if(divideByZeroReactionBoolean) {
+        divideByZeroReactionBoolean = false;
+        pushClear();
+    } else {
+        if(firstOperClick || !isTempOper) {
         operator = oper;
         firstOperClick = false;
-    } else {
-        tempOper = oper;
-    }
+        } else {
+            tempOper = oper;
+        }
 
-    operClickedOnce++;
-    operClicked = true;
-    doTheLogic();
+        operClickedOnce++;
+        operClicked = true;
+        doTheLogic();
+    }
 }
 
 function pushEquals() {
-    equalsClicked = true;
+    if(display.textContent.length > 0) {
+        equalsClicked = true;
+    }
     doTheLogic();
+}
+
+function divideByZeroReaction(operat, secondNum) {
+    if(operat.textContent == '/' && secondNum === '0') {
+        result = "dude, you cant divide by 0...";
+        divideByZeroReactionBoolean = true;
+    }
 }
 
 function defineOperatorAndEvaluate() {    
     secondNumber = display.textContent;
     if(isTempOper) {
-        if(result !== undefined) {
-            result = doTheEquation(result, operator, secondNumber);
-        } else {
-            result = doTheEquation(firstNumber, operator, secondNumber);
+        divideByZeroReaction(operator, secondNumber);
+        if(!divideByZeroReactionBoolean) {
+            if(result !== undefined) {
+                result = doTheEquation(result, operator, secondNumber);
+            } else {
+                result = doTheEquation(firstNumber, operator, secondNumber);
+            }
         }
         isTempOper = false;
     } else if(!isTempOper) {
-        if(result !== undefined) {
-            result = doTheEquation(result, tempOper, secondNumber);
-        } else {
-            result = doTheEquation(firstNumber, tempOper, secondNumber);
+        divideByZeroReaction(operator, secondNumber);
+        if(!divideByZeroReactionBoolean) {
+            if(result !== undefined) {
+                result = doTheEquation(result, tempOper, secondNumber);
+            } else {
+                result = doTheEquation(firstNumber, tempOper, secondNumber);
+            }
         }
         isTempOper = true;
     }
