@@ -68,6 +68,37 @@ function doTheEquation(a, oper, b) {
     return operatorDeterminizer(a, oper, b);
 }
 
+window.addEventListener('keydown', e => {
+    const button = document.querySelector(`button[code=${e.code}]`);
+    if(!isNaN(button.textContent)) {
+        pushNumber(button);
+    } else {
+        switch (button.textContent) {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+                pushOperator(button);
+                break;
+
+            case '=':
+                pushEquals();
+                break;
+
+            case 'CE':
+                pushClear();
+                break;
+
+            case '.':
+                pushDot();
+                break;
+
+            default:
+                break;
+        }
+    }
+})
+
 function pushClear() {
     display.textContent = '';
     operator = undefined;
@@ -177,6 +208,9 @@ function defineOperatorAndEvaluate() {
             }
         }
         isTempOper = true;
+    }
+    if(result.toString().includes('.')) {
+        result.toFixed(3)
     }
     display.textContent = result;
     operClickedOnce = 1;
